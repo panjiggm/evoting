@@ -1,0 +1,12 @@
+.vote-result-wrapper{
+  width: 1200px;
+  height: 1200px;
+  padding-bottom: 30px;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
