@@ -11,9 +11,12 @@ const CONNECTION_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/new
 
 // menangani CORS
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+	res.header("Access-Control-Allow-Origin", "*"); res.header('Access-Control-Allow-Methods', 'DELETE, PUT'); res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	if ('OPTIONS' == req.method) {
+		res.sendStatus(200);
+	} else {
+		next();
+	}
 });
 
 // Konfigurasi Midleware
@@ -59,7 +62,7 @@ app.post('/vote', function(req, res) {
 	Vote.aggregate(
 		[{ "$group": {
 			"_id": "$name",
-			"total_vote": { "$sum": 1 }
+			"total": { "$sum": 1 }
 		}}],
 
 		function(err, results) {
@@ -88,7 +91,7 @@ io.on('connection', function (socket) {
 
 		[{ "$group": {
 			"_id": "$name",
-			"total_vote": { "$sum": 1 }
+			"total": { "$sum": 1 }
 		}}],
 
 		function(err, results) {
@@ -104,5 +107,5 @@ io.on('connection', function (socket) {
 module.exports = app;
 
 // Start
-server.listen(process.env.PORT || 1234);
-console.log('Open http://localhost:1234');
+server.listen(process.env.PORT || 5432);
+console.log('Open http://localhost:5432');
